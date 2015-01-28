@@ -3,11 +3,9 @@ package Accounts
 import org.scalatest._
 
 class EmailSpec extends FlatSpec with Matchers {
-  "An email" should "represent a valid address" in {
-    val email = new Email("aoe@aoe.com")
-  }
+  "An email" should "represent an valid address" in {
+    new Email("aoe@aoe.com")
 
-  "An email" should "not represent an invalid address" in {
     a[IllegalArgumentException] should be thrownBy {
       new Email("")
     }
