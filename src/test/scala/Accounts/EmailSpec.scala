@@ -9,13 +9,13 @@ class EmailSpec extends FlatSpec with Matchers {
 
   "An email" should "not represent an invalid address" in {
     a[IllegalArgumentException] should be thrownBy {
-      val email = new Email("")
+      new Email("")
     }
     a[IllegalArgumentException] should be thrownBy {
-      val email = new Email("aoe")
+      new Email("aoe")
     }
     a[IllegalArgumentException] should be thrownBy {
-      val email = new Email("@.com")
+      new Email("@.com")
     }
   }
 
