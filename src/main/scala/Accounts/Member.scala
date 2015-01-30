@@ -1,5 +1,3 @@
 package Accounts
 
-class Member {
-
-}
+class Member {}

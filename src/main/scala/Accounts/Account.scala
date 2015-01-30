@@ -1,10 +1,5 @@
 package Accounts
 
-class Account {
-  var members: List[Member] = List();
-
-  def add(m: Member) = {
-    require (!members.contains(m))
-    members = members :+ m
-  }
+case class Account(name: String, members: Set[Member] = Set()) {
+  def add(m: Member): Account = copy(members = members + m)
 }

@@ -1,10 +1,8 @@
 package Accounts
 
-class Email(email: String) {
+case class Email(address: String) {
   def isValid(email: String): Boolean = """\b[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\b""".r.unapplySeq(email).isDefined
-
-  val address = email
-  require(isValid(email))
+  require(isValid(address))
 
   override def toString(): String = address
 
