@@ -25,7 +25,7 @@ class AccountSpec extends FlatSpec with Matchers {
 
     val events: Seq[DomainEvent] = List(AccountWasRegistered(id, name))
 
-    val account = Account.fromStream(id, events)
+    val account = Account(id, events)
     account.id should be(id)
     account.name should be(name)
   }
@@ -51,7 +51,7 @@ class AccountSpec extends FlatSpec with Matchers {
     val events: Seq[DomainEvent] = List(MemberWasAddedToAccount(member.id, accountId))
 
     // assert - state
-    val account = Account.fromStream(accountId, events)
+    val account = Account(accountId, events)
     account.memberIds.size should be(1)
     account.memberIds.contains(member.id) should be(true)
   }

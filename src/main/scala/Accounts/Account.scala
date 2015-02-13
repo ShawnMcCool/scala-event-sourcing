@@ -4,6 +4,9 @@ import DomainEvents._
 
 object Account {
   def apply(id: Account.ID): Account = Account(id, "", Set())
+  def apply(id: ID, events: Seq[DomainEvent]): Account = {
+    events.foldLeft(Account(id)) { (account, event) => { account.apply(event) }}
+  }
 
   object ID {
     def generate = ID(java.util.UUID.randomUUID.toString)
@@ -11,10 +14,6 @@ object Account {
   case class ID(id: String)
 
   def register(id: ID, name: String): Seq[DomainEvent] = Seq(AccountWasRegistered(id, name))
-
-  def fromStream(id: ID, events: Seq[DomainEvent]): Account = {
-    events.foldLeft(Account(id)) { (account, event) => { account.apply(event) }}
-  }
 }
 
 case class Account(id: Account.ID, name: String, memberIds: Set[Member.ID]) {
