@@ -31,15 +31,12 @@ class AccountSpec extends FlatSpec with Matchers {
   }
 
   "Adding a new member" should "throw a MemberWasAddedToAccount event" in {
-    // arrange
     val member = Member(Member.ID.generate)
     val accountId = Account.ID.generate
     val account = Account(Seq(AccountWasRegistered(accountId, "")))
 
-    // act
     val events = account.add(member)
 
-    // assert - events
     events.contains(
       MemberWasAddedToAccount(member.id, accountId)
     ) should be(true)
@@ -50,8 +47,7 @@ class AccountSpec extends FlatSpec with Matchers {
     val accountId = Account.ID.generate
 
     val events: Seq[DomainEvent] = List(MemberWasAddedToAccount(member.id, accountId))
-
-    // assert - state
+    
     val account = Account(events)
     account.memberIds.size should be(1)
     account.memberIds.contains(member.id) should be(true)
