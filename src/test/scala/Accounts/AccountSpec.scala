@@ -4,7 +4,7 @@ import DomainEvents._
 import org.scalatest._
 
 class AccountSpec extends FlatSpec with Matchers {
-  "A generated ID" should "be a unique id" in {
+  "A generated ID" should "be unique" in {
     Account.ID.generate should not be(Account.ID.generate)
   }
 
@@ -22,6 +22,7 @@ class AccountSpec extends FlatSpec with Matchers {
   "A registered account" should "have a name and id" in {
     val id = Account.ID.generate
     val name = "BurgerCo"
+
     val events: Seq[DomainEvent] = List(AccountWasRegistered(id, name))
 
     val account = Account.fromStream(id, events)
