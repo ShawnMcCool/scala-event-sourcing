@@ -25,7 +25,7 @@ class AccountSpec extends FlatSpec with Matchers {
 
     val events: Seq[DomainEvent] = List(AccountWasRegistered(id, name))
 
-    val account = Account(id, events)
+    val account = Account(events)
     account.id should be(id)
     account.name should be(name)
   }
@@ -34,9 +34,10 @@ class AccountSpec extends FlatSpec with Matchers {
     // arrange
     val member = Member(Member.ID.generate)
     val accountId = Account.ID.generate
+    val account = Account(Seq(AccountWasRegistered(accountId, "")))
 
     // act
-    val events = Account(accountId).add(member)
+    val events = account.add(member)
 
     // assert - events
     events.contains(
@@ -51,12 +52,14 @@ class AccountSpec extends FlatSpec with Matchers {
     val events: Seq[DomainEvent] = List(MemberWasAddedToAccount(member.id, accountId))
 
     // assert - state
-    val account = Account(accountId, events)
+    val account = Account(events)
     account.memberIds.size should be(1)
     account.memberIds.contains(member.id) should be(true)
   }
 
   "An account" should "measure equality by ID" in {
-    Account(Account.ID("1")) should be(Account(Account.ID("1")))
+    val account1 = Account(Seq(AccountWasRegistered(Account.ID("1"), "")))
+    val account2 = Account(Seq(AccountWasRegistered(Account.ID("1"), "")))
+    account1 should be(account2)
   }
 }

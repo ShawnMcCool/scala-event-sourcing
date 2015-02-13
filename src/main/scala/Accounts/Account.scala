@@ -3,13 +3,14 @@ package Accounts
 import DomainEvents._
 
 object Account {
-  def apply(id: Account.ID): Account = Account(id, "", Set())
-  def apply(id: ID, events: Seq[DomainEvent]): Account = {
-    events.foldLeft(Account(id)) { (account, event) => { account.apply(event) }}
+  def apply(): Account = Account(Account.ID.empty, "", Set())
+  def apply(events: Seq[DomainEvent]): Account = {
+    events.foldLeft(Account()) { (account, event) => { account.apply(event) }}
   }
 
   object ID {
     def generate = ID(java.util.UUID.randomUUID.toString)
+    def empty = ID("")
   }
   case class ID(id: String)
 
@@ -23,7 +24,7 @@ case class Account(id: Account.ID, name: String, memberIds: Set[Member.ID]) {
 
   def apply(e: DomainEvent): Account = {
     def applyAccountWasRegistered(e: AccountWasRegistered) =
-      copy(name = e.name)
+      copy(id = e.id, name = e.name)
     def applyMemberWasAddedToAccount(e: MemberWasAddedToAccount) =
       copy(memberIds = memberIds + e.memberId)
 
