@@ -1,28 +1,27 @@
 package Accounts
 
-trait DomainEvent {}
-
-case class AccountWasRegistered(id: AccountId, name: String) extends DomainEvent
-case class MemberWasAddedToAccount(memberId: MemberId, accountId: AccountId) extends DomainEvent
-
-case class AccountId(id: String)
-
-object AccountId {
-  def generate = AccountId(java.util.UUID.randomUUID.toString)
-}
+import DomainEvents._
 
 object Account {
-  def register(id: AccountId, name: String): Seq[DomainEvent] = Seq(AccountWasRegistered(id, name))
+  object ID {
+    def generate = ID(java.util.UUID.randomUUID.toString)
+  }
+  case class ID(id: String)
+  
+  def register(id: ID, name: String): Seq[DomainEvent] = Seq(AccountWasRegistered(id, name))
 
-  def fromStream(id: AccountId, events: Seq[DomainEvent]): Account = {
+  def fromStream(id: ID, events: Seq[DomainEvent]): Account = {
     events.foldLeft(Account(id)) { (account, event) => { account.apply(event) }}
   }
 }
 
-case class Account(id: AccountId, name: String = "", memberIds: Set[MemberId] = Set()) {
+case class Account(id: Account.ID, name: String = "", memberIds: Set[Member.ID] = Set()) {
   def add(m: Member): Seq[DomainEvent] = Seq(new MemberWasAddedToAccount(m.id, this.id))
 
-  def apply(e: DomainEvent) = e match {
+  def ==(that: Account): Boolean = this.id.equals(that.id)
+
+  // domain event application
+  def apply(e: DomainEvent): Account = e match {
     case event: AccountWasRegistered => applyAccountWasRegistered(event)
     case event: MemberWasAddedToAccount => applyMemberWasAddedToAccount(event)
   }

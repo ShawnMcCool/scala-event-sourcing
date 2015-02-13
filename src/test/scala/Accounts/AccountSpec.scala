@@ -5,8 +5,8 @@ import org.scalatest._
 class AccountSpec extends FlatSpec with Matchers {
   "An account" should "accept new members" in {
     // arrange
-    val member = Member(MemberId.generate)
-    val accountId = AccountId.generate
+    val member = Member(Member.ID.generate)
+    val accountId = Account.ID.generate
 
     // act
     val eventStream = Account(accountId).add(member)

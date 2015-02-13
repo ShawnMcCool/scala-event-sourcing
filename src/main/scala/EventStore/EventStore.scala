@@ -1,4 +1,4 @@
-package EventSourcing
+package EventStore
 
 class EventStore {
 
