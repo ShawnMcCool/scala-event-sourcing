@@ -8,7 +8,7 @@ class AccountSpec extends FlatSpec with Matchers {
     Account.ID.generate should not be(Account.ID.generate)
   }
 
-  "Account registration" should "trigger a AccountWasRegistered event" in {
+  "Account registration" should "raise an AccountWasRegistered event" in {
     val id = Account.ID.generate
     val name = "BurgerCo"
 
@@ -30,8 +30,8 @@ class AccountSpec extends FlatSpec with Matchers {
     account.name should be(name)
   }
 
-  "Adding a new member" should "throw a MemberWasAddedToAccount event" in {
-    val member = Member(Member.ID.generate)
+  "Adding a new member" should "raise a MemberWasAddedToAccount event" in {
+    val member = Member(Email("test@test.com"))
     val accountId = Account.ID.generate
     val account = Account(Seq(AccountWasRegistered(accountId, "")))
 
@@ -43,11 +43,11 @@ class AccountSpec extends FlatSpec with Matchers {
   }
 
   "An account" should "contain an added member" in {
-    val member = Member(Member.ID.generate)
+    val member = Member(Email("test@test.com"))
     val accountId = Account.ID.generate
 
     val events: Seq[DomainEvent] = List(MemberWasAddedToAccount(member.id, accountId))
-    
+
     val account = Account(events)
     account.memberIds.size should be(1)
     account.memberIds.contains(member.id) should be(true)
