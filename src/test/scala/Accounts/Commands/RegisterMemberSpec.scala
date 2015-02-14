@@ -14,7 +14,8 @@ class RegisterMemberSpec extends FlatSpec with Matchers with MockFactory {
     val eventStore = mock[EventStore]
     (eventStore.store _).expects(events)
 
-    val handler = new RegisterMemberHandler(eventStore)
-    handler.execute(RegisterMember(memberId, Email("test@test.com")))
+    new RegisterMemberHandler(eventStore).execute(
+      RegisterMember(memberId, Email("test@test.com"))
+    )
   }
 }
