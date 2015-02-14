@@ -1,7 +1,6 @@
 package Commands
 
 import Accounts._
-import DomainEvents._
 import EventStore._
 
 object RegisterMember {
@@ -11,8 +10,6 @@ object RegisterMember {
 case class RegisterMember(id: Member.ID, email: Email)
 
 class RegisterMemberHandler(eventStore: EventStore) {
-  def execute(c: RegisterMember) = {
-    val events: Seq[DomainEvent] = Member.register(c.id, c.email)
-    eventStore.store(events)
-  }
+  def execute(c: RegisterMember) =
+    eventStore.store(Member.register(c.id, c.email))
 }
