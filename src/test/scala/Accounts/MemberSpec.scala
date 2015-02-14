@@ -1,5 +1,6 @@
 package Accounts
 
+import DomainEvents._
 import org.scalatest._
 
 class MemberSpec extends FlatSpec with Matchers {
@@ -8,11 +9,21 @@ class MemberSpec extends FlatSpec with Matchers {
   }
 
   "Member registration" should "raise a MemberHasRegistered event" in {
-    val member = Member.register(Email("test@tester.com"))
+    val id = Member.ID.generate
+    val events: Seq[DomainEvent] = Member.register(id, Email("test@tester.com"))
+
+    events.contains(
+      MemberHasRegistered(id, Email("test@tester.com"))
+    ) should be(true)
   }
-//  "A member" should "measure equality by ID" in {
-//    val member1 = Member(Seq(AccountWasRegistered(Account.ID("1"), "")))
-//    val member2 = Member(Seq(AccountWasRegistered(Account.ID("1"), "")))
-//    account1 should be(account2)
-//  }
+
+  "A registered member" should "have an id and email" in {
+    val id = Member.ID.generate
+
+    val events: Seq[DomainEvent] = List(MemberHasRegistered(id, Email("test@tester.com")))
+
+    val member = Member(events)
+    member.id should be(id)
+    member.email should be(Email("test@tester.com"))
+  }
 }
