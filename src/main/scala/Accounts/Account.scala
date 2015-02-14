@@ -6,9 +6,10 @@ object Account {
   def apply(): Account = Account(Account.ID.generate, "", Set())
 
   def apply(events: Seq[DomainEvent]): Account = {
-    events.foldLeft(Account()) { (account, event) => {
-      account.apply(event)
-    }
+    events.foldLeft(Account()) {
+      (account, event) => {
+        account.apply(event)
+      }
     }
   }
 

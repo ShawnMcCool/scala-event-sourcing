@@ -28,8 +28,6 @@ object Member {
 }
 
 case class Member(id: Member.ID, email: Email) {
-  def equals(that: Member): Boolean = this.id == that.id
-
   def apply(e: DomainEvent): Member = {
     def applyMemberHasRegistered(e: MemberHasRegistered) =
       copy(id = e.id, email = e.email)

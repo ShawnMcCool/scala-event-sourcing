@@ -1,4 +1,4 @@
-package Commands
+package Accounts.Commands
 
 import Accounts._
 import EventStore._
