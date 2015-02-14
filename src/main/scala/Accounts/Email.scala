@@ -6,5 +6,5 @@ case class Email(address: String) {
 
   override def toString(): String = address
 
-  def ==(that: Email): Boolean = this.address == that.address
+  def equals(that: Email): Boolean = this.address == that.address
 }

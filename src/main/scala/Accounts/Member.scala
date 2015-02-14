@@ -18,7 +18,7 @@ object Member {
   def register(id: Member.ID, email: Email): Seq[DomainEvent] = List(MemberHasRegistered(id, email))
 
   case class ID(id: String) {
-    def ==(that: ID): Boolean = this.id == that.id
+    def equals(that: ID): Boolean = this.id == that.id
   }
 
   object ID {

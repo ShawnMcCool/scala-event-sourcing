@@ -19,7 +19,7 @@ object Account {
   }
 
   case class ID(id: String) {
-    def ==(that: ID): Boolean = this.id == that.id
+    def equals(that: ID): Boolean = this.id == that.id
   }
 
 }
