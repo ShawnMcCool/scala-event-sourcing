@@ -8,7 +8,7 @@ class MemberSpec extends FlatSpec with Matchers {
     Member.ID.generate should not be(Member.ID.generate)
   }
 
-  "Member registration" should "raise a MemberHasRegistered event" in {
+  "Member registration" should "raise MemberHasRegistered" in {
     val id = Member.ID.generate
     val events: Seq[DomainEvent] = Member.register(id, Email("test@tester.com"))
 
