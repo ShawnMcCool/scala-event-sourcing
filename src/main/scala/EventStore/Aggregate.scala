@@ -1,0 +1,3 @@
+package EventStore
+
+trait AggregateIdentity

@@ -11,5 +11,5 @@ case class RegisterMember(id: Member.ID, email: Email)
 
 class RegisterMemberHandler(eventStore: EventStore) {
   def execute(c: RegisterMember) =
-    eventStore.store(Member.register(c.id, c.email))
+    eventStore.store(c.id, Member.register(c.id, c.email))
 }

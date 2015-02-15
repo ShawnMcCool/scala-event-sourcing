@@ -17,11 +17,11 @@ class EmailSpec extends FlatSpec with Matchers {
     }
   }
 
-  "An email" should "be printed as its address" in {
+  "An email" should "be human readable" in {
     Email("test@email.com").toString() should be("test@email.com")
   }
 
-  "An email" should "be equal to the same address" in {
+  "An email" should "be comparable to itself" in {
     Email("test@email.com") == Email("test@email.com") should be(true)
     Email("test@email.com") == Email("different@email.com") should be(false)
   }

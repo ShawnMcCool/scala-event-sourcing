@@ -1,6 +1,7 @@
 package Accounts
 
 import DomainEvents._
+import EventStore._
 
 object Account {
   def apply(): Account = Account(Account.ID.generate, "", Set())
@@ -19,7 +20,7 @@ object Account {
     def generate = ID(java.util.UUID.randomUUID.toString)
   }
 
-  case class ID(id: String) {
+  case class ID(id: String) extends AggregateIdentity {
     def equals(that: ID): Boolean = this.id == that.id
   }
 

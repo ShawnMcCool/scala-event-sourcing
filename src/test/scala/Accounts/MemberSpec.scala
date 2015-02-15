@@ -24,6 +24,6 @@ class MemberSpec extends FlatSpec with Matchers {
 
     val member = Member(events)
     member.id should be(id)
-    member.email should be(Email("test@tester.com"))
+    member.email should be(Some(Email("test@tester.com")))
   }
 }
