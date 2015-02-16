@@ -48,10 +48,4 @@ class AccountSpec extends FlatSpec with Matchers {
     account.memberIds.size should be(1)
     account.memberIds.contains(member.id) should be(true)
   }
-
-  "An account" should "measure equality by ID" in {
-    val account1 = Account(Seq(AccountWasRegistered(Account.ID("1"), "")))
-    val account2 = Account(Seq(AccountWasRegistered(Account.ID("1"), "")))
-    account1 should be(account2)
-  }
 }
