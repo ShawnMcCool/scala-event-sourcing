@@ -4,8 +4,6 @@ import DomainEvents._
 import EventStore._
 
 object Account extends Aggregate[Account] {
-  def apply(): Account = Account(Account.ID.generate, "", Set())
-
   def register(id: ID, name: String): Seq[DomainEvent] = Seq(AccountWasRegistered(id, name))
 
   def applyEvents(e: DomainEvent, account: Option[Account]): Account = {
@@ -33,6 +31,4 @@ object Account extends Aggregate[Account] {
 
 case class Account(id: Account.ID, name: String, memberIds: Set[Member.ID]) {
   def addMember(m: Member): Seq[DomainEvent] = Seq(new MemberWasAddedToAccount(m.id, this.id))
-
-  def equals(that: Account): Boolean = this.id == that.id
 }
