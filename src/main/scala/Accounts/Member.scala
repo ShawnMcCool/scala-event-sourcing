@@ -7,9 +7,9 @@ object Member extends Aggregate[Member] {
   def register(id: Member.ID, email: Email): DomainEvent = MemberHasRegistered(id, email)
 
   def applyEvent(e: DomainEvent, member: Option[Member]): Member = e match {
-    case event: MemberHasRegistered     => Member(Member.ID(event.id), Email(event.email))
-    case event: MemberChangedTheirEmail => member.get.copy(id = Member.ID(event.id), email = Email(event.email))
-    case _                              => throw new UnmatchedDomainEvent(e)
+    case MemberHasRegistered(id, email)     => Member(Member.ID(id), Email(email))
+    case MemberChangedTheirEmail(id, email) => member.get.copy(id = Member.ID(id), email = Email(email))
+    case _                                  => throw new UnmatchedDomainEvent(e)
   }
 
   object ID {

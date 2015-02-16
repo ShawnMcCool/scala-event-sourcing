@@ -7,8 +7,8 @@ object Account extends Aggregate[Account] {
   def register(id: ID, name: String): DomainEvent = AccountWasRegistered(id, name)
 
   def applyEvent(e: DomainEvent, account: Option[Account]): Account = e match {
-    case event: AccountWasRegistered    => Account(Account.ID(event.id), event.name, Set())
-    case event: MemberWasAddedToAccount => account.get.copy(memberIds = account.get.memberIds + Member.ID(event.memberId))
+    case AccountWasRegistered(id, name) => Account(Account.ID(id), name, Set())
+    case MemberWasAddedToAccount(id, _) => account.get.copy(memberIds = account.get.memberIds + Member.ID(id))
     case _                              => throw new UnmatchedDomainEvent(e)
   }
 
