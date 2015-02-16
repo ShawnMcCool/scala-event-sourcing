@@ -6,7 +6,7 @@ import EventStore._
 object Member extends Aggregate[Member] {
   def register(id: Member.ID, email: Email): DomainEvent = MemberHasRegistered(id, email)
 
-  def applyEvents(e: DomainEvent, member: Option[Member]): Member = e match {
+  def applyEvent(e: DomainEvent, member: Option[Member]): Member = e match {
     case event: MemberHasRegistered     => Member(Member.ID(event.id), Email(event.email))
     case event: MemberChangedTheirEmail => member.get.copy(id = Member.ID(event.id), email = Email(event.email))
     case _                              => throw new UnmatchedDomainEvent(e)

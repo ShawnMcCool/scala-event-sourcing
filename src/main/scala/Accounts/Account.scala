@@ -6,7 +6,7 @@ import EventStore._
 object Account extends Aggregate[Account] {
   def register(id: ID, name: String): DomainEvent = AccountWasRegistered(id, name)
 
-  def applyEvents(e: DomainEvent, account: Option[Account]): Account = e match {
+  def applyEvent(e: DomainEvent, account: Option[Account]): Account = e match {
     case event: AccountWasRegistered    => Account(Account.ID(event.id), event.name, Set())
     case event: MemberWasAddedToAccount => account.get.copy(memberIds = account.get.memberIds + Member.ID(event.memberId))
     case _                              => throw new UnmatchedDomainEvent(e)
