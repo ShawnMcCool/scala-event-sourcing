@@ -4,6 +4,10 @@ import DomainEvents._
 import org.scalatest._
 
 class AccountSpec extends FlatSpec with Matchers {
+  def getMember(): Member = {
+    Member(Member.ID.generate, Email("test@test.com"))
+  }
+
   "A generated ID" should "be unique" in {
     Account.ID.generate should not be(Account.ID.generate)
   }
@@ -31,11 +35,11 @@ class AccountSpec extends FlatSpec with Matchers {
   }
 
   "Adding a new member" should "raise MemberWasAddedToAccount" in {
-    val member = Member(Email("test@test.com"))
+    val member = getMember()
     val accountId = Account.ID.generate
     val account = Account(Seq(AccountWasRegistered(accountId, "")))
 
-    val events = account.add(member)
+    val events = account.addMember(member)
 
     events.contains(
       MemberWasAddedToAccount(member.id, accountId)
@@ -43,12 +47,15 @@ class AccountSpec extends FlatSpec with Matchers {
   }
 
   "An account" should "contain an added member" in {
-    val member = Member(Email("test@test.com"))
+    val member = getMember()
     val accountId = Account.ID.generate
 
-    val events: Seq[DomainEvent] = List(MemberWasAddedToAccount(member.id, accountId))
+    val events: Seq[DomainEvent] = Seq(MemberWasAddedToAccount(member.id, accountId))
 
-    val account = Account(events)
+    val account = Account(
+      Seq(AccountWasRegistered(Account.ID.generate, "BurgerCo")) ++ events
+    )
+
     account.memberIds.size should be(1)
     account.memberIds.contains(member.id) should be(true)
   }

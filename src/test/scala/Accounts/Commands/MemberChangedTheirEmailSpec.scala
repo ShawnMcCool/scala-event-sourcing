@@ -23,6 +23,7 @@ class MemberChangedTheirEmailSpec extends FlatSpec with Matchers with MockFactor
     )
 
     // assert
-    Member(setupEvents ++ resultingEvents).email.get should be(Email("new@email.com"))
+    val member = Member(setupEvents ++ resultingEvents)
+    member.email should be(Email("new@email.com"))
   }
 }
