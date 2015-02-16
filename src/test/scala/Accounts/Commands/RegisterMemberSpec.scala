@@ -8,7 +8,7 @@ import org.scalamock.scalatest.MockFactory
 class RegisterMemberSpec extends FlatSpec with Matchers with MockFactory {
   "The handler" should "register a member" in {
     val id = Member.ID.generate
-    val eventStore = new EventStore
+    val eventStore = new MemoryEventStore
 
     new RegisterMemberHandler(eventStore).execute(
       RegisterMember(id, Email("test@test.com"))

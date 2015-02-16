@@ -6,12 +6,12 @@ import org.scalamock.scalatest.MockFactory
 
 case class TestID(id: String) extends AggregateIdentity
 
-class EventStoreSpec extends FlatSpec with Matchers with MockFactory {
+class MemoryEventStoreSpec extends FlatSpec with Matchers with MockFactory {
   "The event store" should "store one event" in {
     val id = TestID("1")
     val event = MemberHasRegistered("1", "test@test.com")
 
-    val eventStore = new EventStore
+    val eventStore = new MemoryEventStore
     eventStore.store(id, event)
 
     eventStore.forAggregate(id) should be(Seq(event))
@@ -24,7 +24,7 @@ class EventStoreSpec extends FlatSpec with Matchers with MockFactory {
       MemberHasRegistered("1", "test@test.com")
     )
 
-    val eventStore = new EventStore
+    val eventStore = new MemoryEventStore
     eventStore.store(id, events)
 
     eventStore.forAggregate(id) should be(events)
@@ -33,7 +33,7 @@ class EventStoreSpec extends FlatSpec with Matchers with MockFactory {
   "The event store" should "continue to store events" in {
     val id = TestID("1")
 
-    val eventStore = new EventStore
+    val eventStore = new MemoryEventStore
     eventStore.store(id, MemberHasRegistered("1", "test@test.com"))
     eventStore.store(id, MemberHasRegistered("1", "test@test.com"))
 
