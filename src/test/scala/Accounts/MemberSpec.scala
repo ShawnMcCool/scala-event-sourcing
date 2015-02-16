@@ -10,17 +10,14 @@ class MemberSpec extends FlatSpec with Matchers {
 
   "Member registration" should "raise MemberHasRegistered" in {
     val id = Member.ID.generate
-    val events: Seq[DomainEvent] = Member.register(id, Email("test@tester.com"))
 
-    events.contains(
-      MemberHasRegistered(id, Email("test@tester.com"))
-    ) should be(true)
+    Member.register(id, Email("test@tester.com")) == MemberHasRegistered(id, Email("test@tester.com")) should be(true)
   }
 
   "A registered member" should "have an id and email" in {
     val id = Member.ID.generate
 
-    val events: Seq[DomainEvent] = List(MemberHasRegistered(id, Email("test@tester.com")))
+    val events: Seq[DomainEvent] = Seq(MemberHasRegistered(id, Email("test@tester.com")))
 
     val member = Member(events)
     member.id should be(id)

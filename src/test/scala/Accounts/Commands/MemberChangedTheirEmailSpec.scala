@@ -8,7 +8,6 @@ import org.scalatest._
 
 class MemberChangedTheirEmailSpec extends FlatSpec with Matchers with MockFactory {
   "The member's email" should "be changed" in {
-    // arrange
     val id = Member.ID.generate
 
     val eventStore = mock[EventStore]

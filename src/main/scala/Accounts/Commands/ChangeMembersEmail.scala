@@ -13,7 +13,7 @@ class ChangeMembersEmailHandler(events: EventStore) {
   def execute(c: ChangeMembersEmail) = {
     val member = Member(events.forAggregate(c.id))
     events.store(c.id,
-      member.changeEmail(c.email)
+      Seq(member.changeEmail(c.email))
     )
   }
 }

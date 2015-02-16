@@ -4,7 +4,7 @@ import DomainEvents._
 import EventStore._
 
 object Member extends Aggregate[Member] {
-  def register(id: Member.ID, email: Email): Seq[DomainEvent] =Seq(MemberHasRegistered(id, email))
+  def register(id: Member.ID, email: Email): DomainEvent = MemberHasRegistered(id, email)
 
   def applyEvents(e: DomainEvent, member: Option[Member]): Member = e match {
     case event: MemberHasRegistered     => Member(event.id, event.email)
@@ -19,5 +19,5 @@ object Member extends Aggregate[Member] {
 }
 
 case class Member(id: Member.ID, email: Email) {
-  def changeEmail(email: Email): Seq[DomainEvent] = Seq(MemberChangedTheirEmail(id, email))
+  def changeEmail(email: Email): DomainEvent = MemberChangedTheirEmail(id, email)
 }
