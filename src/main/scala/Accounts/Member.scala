@@ -15,11 +15,9 @@ object Member extends Aggregate[Member] {
   object ID {
     def generate = ID(java.util.UUID.randomUUID.toString)
   }
-  case class ID(id: String) extends AggregateIdentity {
-    override def toString: String = id
-  }
+  case class ID(id: String) extends AggregateIdentity
 }
 
 case class Member(id: Member.ID, email: Email) {
-  def changeEmail(email: Email): DomainEvent = MemberChangedTheirEmail(id, email)
+  def changeEmail(email: Email): MemberChangedTheirEmail = MemberChangedTheirEmail(id, email)
 }

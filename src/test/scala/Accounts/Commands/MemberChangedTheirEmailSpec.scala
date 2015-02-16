@@ -10,12 +10,8 @@ class MemberChangedTheirEmailSpec extends FlatSpec with Matchers with MockFactor
   "The member's email" should "be changed" in {
     val id = Member.ID.generate
 
-    val eventStore = mock[EventStore]
-    val setupEvent: DomainEvent = MemberHasRegistered(id, Email("old@email.com"))
-    val resultingEvent: DomainEvent = MemberChangedTheirEmail(id, Email("new@email.com"))
-
-    (eventStore.forAggregate _).expects(id).returns(Seq(setupEvent))
-    (eventStore.store _).expects(id, Seq(resultingEvent))
+    val eventStore = new EventStore
+    eventStore.store(id, MemberHasRegistered(id, Email("old@email.com")))
 
     // act
     new ChangeMembersEmailHandler(eventStore).execute(
@@ -23,7 +19,12 @@ class MemberChangedTheirEmailSpec extends FlatSpec with Matchers with MockFactor
     )
 
     // assert
-    val member = Member(Seq(setupEvent, resultingEvent))
+    eventStore.forAggregate(id) should be(Seq(
+      MemberHasRegistered(id, Email("old@email.com")),
+      MemberChangedTheirEmail(id, Email("new@email.com"))
+    ))
+
+    val member = Member(eventStore.forAggregate(id))
     member.email should be(Email("new@email.com"))
   }
 }

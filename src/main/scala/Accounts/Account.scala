@@ -15,9 +15,7 @@ object Account extends Aggregate[Account] {
   object ID {
     def generate = ID(java.util.UUID.randomUUID.toString)
   }
-  case class ID(id: String) extends AggregateIdentity {
-    override def toString = id
-  }
+  case class ID(id: String) extends AggregateIdentity
 }
 
 case class Account(id: Account.ID, name: String, memberIds: Set[Member.ID]) {

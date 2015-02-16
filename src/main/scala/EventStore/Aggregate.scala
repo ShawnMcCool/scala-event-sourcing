@@ -19,6 +19,9 @@ trait Aggregate[T] {
   }
 }
 
-trait AggregateIdentity
+trait AggregateIdentity {
+  val id: String
+  override def toString = id
+}
 
 class CouldNotPlayBackAggregate extends Exception
