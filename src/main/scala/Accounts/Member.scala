@@ -15,7 +15,7 @@ object Member {
     }
   }
 
-  def register(id: Member.ID, email: Email): Seq[DomainEvent] = List(MemberHasRegistered(id, email))
+  def register(id: Member.ID, email: Email): Seq[DomainEvent] = Seq(MemberHasRegistered(id, email))
 
   case class ID(id: String) extends AggregateIdentity {
     def equals(that: ID): Boolean = this.id == that.id

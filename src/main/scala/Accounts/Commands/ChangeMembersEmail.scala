@@ -10,11 +10,8 @@ object ChangeMembersEmail {
 case class ChangeMembersEmail(id: Member.ID, email: Email)
 
 class ChangeMembersEmailHandler(events: EventStore) {
-  def execute(c: ChangeMembersEmail) = {
-    val member = Member(events.forAggregate(c.id))
-    events.store(member.id,
-      member.changeEmail(c.email)
+  def execute(c: ChangeMembersEmail) =
+    events.store(c.id,
+      Member(events.forAggregate(c.id)).changeEmail(c.email)
     )
-  }
-  
 }
