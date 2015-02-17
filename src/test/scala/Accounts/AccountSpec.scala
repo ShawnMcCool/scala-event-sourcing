@@ -5,7 +5,10 @@ import org.scalatest._
 
 class AccountSpec extends FlatSpec with Matchers {
   def getMember(): Member = {
-    Member(Member.ID.generate, Email("test@test.com"))
+    Member(Seq(MemberHasRegistered(Member.ID.generate, Email("test@user.com"))))
+  }
+  def registerAccount(): Seq[DomainEvent] = {
+    Seq(AccountWasRegistered(Account.ID.generate, "Test Account"))
   }
 
   "A generated ID" should "be unique" in {
@@ -26,6 +29,19 @@ class AccountSpec extends FlatSpec with Matchers {
     val account = Account(Seq(AccountWasRegistered(id, name)))
     account.id should be(id)
     account.name should be(name)
+  }
+
+  "A member" should "not be added more than once" in {
+    val member = getMember()
+
+    val registration = registerAccount()
+    val memberAddition = Account(registration).addMember(member)
+
+    val account = Account(registration :+ memberAddition)
+
+    a[MemberCannotBeAddedMoreThanOnce] should be thrownBy {
+      account.addMember(member)
+    }
   }
 
   "Adding a new member" should "raise MemberWasAddedToAccount" in {

@@ -19,5 +19,9 @@ object Account extends Aggregate[Account] {
 }
 
 case class Account(id: Account.ID, name: String, memberIds: Set[Member.ID]) {
-  def addMember(m: Member): DomainEvent = MemberWasAddedToAccount(m.id, this.id)
+  def addMember(m: Member): DomainEvent =
+    if (memberIds.contains(m.id)) throw new MemberCannotBeAddedMoreThanOnce
+    else MemberWasAddedToAccount(m.id, this.id)
 }
+
+class MemberCannotBeAddedMoreThanOnce extends Exception
